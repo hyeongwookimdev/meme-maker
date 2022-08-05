@@ -1,5 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Jua&family=Lobster&family=Mouse+Memoirs&family=Nanum+Pen+Script&family=Square+Peg&display=swap");
-@import "/reset.css";
+@import "/css/reset.css";
 
 /*
 font-family: 'Black Han Sans', sans-serif;
@@ -32,6 +32,10 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.hidden {
+  display: none;
 }
 
 .color-options {

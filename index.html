@@ -5,11 +5,37 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Meme Maker</title>
-    <link rel="stylesheet" href="/style.css" />
+    <link rel="stylesheet" href="css/style.css" />
   </head>
   <body>
-    <div class="color-options">
+    <div class="color-options flat">
+      <select name="color-style" id="color-style">
+        <option value="">--Color style--</option>
+        <option value="flat">Flat</option>
+        <option value="pastel">Pastel</option>
+        <option value="neon">Neon</option>
+      </select>
       <input id="color" type="color" />
+      <div
+        class="color-option"
+        style="background-color: #e74c3c"
+        data-color="#e74c3c"
+      ></div>
+      <div
+        class="color-option"
+        style="background-color: #e67e22"
+        data-color="#e67e22"
+      ></div>
+      <div
+        class="color-option"
+        style="background-color: #f1c40f"
+        data-color="#f1c40f"
+      ></div>
+      <div
+        class="color-option"
+        style="background-color: #2ecc71"
+        data-color="#2ecc71"
+      ></div>
       <div
         class="color-option"
         style="background-color: #1abc9c"
@@ -27,23 +53,8 @@
       ></div>
       <div
         class="color-option"
-        style="background-color: #27ae60"
-        data-color="#27ae60"
-      ></div>
-      <div
-        class="color-option"
-        style="background-color: #8e44ad"
-        data-color="#8e44ad"
-      ></div>
-      <div
-        class="color-option"
-        style="background-color: #f1c40f"
-        data-color="#f1c40f"
-      ></div>
-      <div
-        class="color-option"
-        style="background-color: #e74c3c"
-        data-color="#e74c3c"
+        style="background-color: #9b59b6"
+        data-color="#9b59b6"
       ></div>
       <div
         class="color-option"
@@ -52,20 +63,11 @@
       ></div>
       <div
         class="color-option"
-        style="background-color: #d35400"
-        data-color="#d35400"
-      ></div>
-      <div
-        class="color-option"
-        style="background-color: #2ecc71"
-        data-color="#2ecc71"
-      ></div>
-      <div
-        class="color-option"
-        style="background-color: #e67e22"
-        data-color="#e67e22"
+        style="background-color: #ecf0f1"
+        data-color="#ecf0f1"
       ></div>
     </div>
+
     <canvas></canvas>
     <div class="btns">
       <span>line-width</span>
@@ -89,6 +91,8 @@
         value="100"
         step="1"
       />
+      <button id="speech-balloon">💬</button>
+      <button id="heart">❤️</button>
       <button id="destroy-btn">✨ Clear</button>
       <button id="eraser-btn">❌ Erase</button>
       <label for="file">
@@ -96,6 +100,7 @@
         <input id="file" type="file" accept="image/*" />
       </label>
       <input id="text" type="text" placeholder="Add text here... :)" />
+      <button id="text-mode-btn">🪣 Fill Text</button>
       <span>Font Size</span>
       <input
         id="font-width"
@@ -115,12 +120,14 @@
         <option value="Jua">Jua(kor)</option>
         <option value="Nanum Pen Script">Square Peg(kor)</option>
       </select>
-      <button id="text-mode-btn">🪣 Fill Text</button>
 
       <button id="save">💾 Save image</button>
     </div>
+    <div class="stickers"></div>
 
     <!--테마를 정한 팔레트를 넣어도 좋을 듯-->
-    <script src="/app.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/palette.js"></script>
+    <script src="js/sticker.js"></script>
   </body>
 </html>
