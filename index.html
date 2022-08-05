@@ -68,10 +68,28 @@
     </div>
     <canvas></canvas>
     <div class="btns">
-      <input id="line-width" type="range" min="1" max="10" value="5" step="1" />
+      <span>line-width</span>
+      <input
+        id="line-width"
+        type="range"
+        min="1"
+        max="20"
+        value="10"
+        step="1"
+      />
       <button id="fill-background-btn">🪣 Fill Background</button>
       <button id="mode-btn">📐 Draw Figure</button>
-      <button id="destroy-btn">💣 Destroy</button>
+      <button id="arc-btn">⚪️ Draw Circle</button>
+      <span>radius</span>
+      <input
+        id="arc-width"
+        type="range"
+        min="1"
+        max="200"
+        value="100"
+        step="1"
+      />
+      <button id="destroy-btn">✨ Clear</button>
       <button id="eraser-btn">❌ Erase</button>
       <label for="file">
         🏞 Add photo
