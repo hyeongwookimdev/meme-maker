@@ -1,3 +1,7 @@
+const fillBackgroundBtn = document.querySelector("#fill-background-btn");
+const textModeBtn = document.querySelector("#text-mode-btn");
+const fontStyle = document.querySelector("#font-style");
+const fontWidth = document.querySelector("#font-width");
 const saveBtn = document.querySelector("#save");
 const textInput = document.querySelector("#text");
 const fileInput = document.querySelector("#file");
@@ -17,18 +21,24 @@ const CANVAS_HEIGHT = 800;
 canvas.width = CANVAS_WIDTH;
 canvas.height = CANVAS_HEIGHT;
 ctx.lineWidth = lineWidth.value;
+ctx.font = `${fontWidth.value}px serif`;
 /*  CSS뿐 아니라 JS에도 높이와 너비를 지정해줘야 함
     선들을  그리기 시작할 때 width와 height를 JS에서만 수정할 것
     canvas에서 이미지의 퀄리티를 높이기 위해서 */
 ctx.lineCap = "round";
 let isPainting = false;
 let isFilling = false;
+let isFillingText = false;
 
 function onMove(event) {
   if (isPainting) {
     ctx.lineTo(event.offsetX, event.offsetY);
     ctx.stroke();
     return; //함수 끝내기
+  }
+  if (isFilling) {
+    ctx.lineTo(event.offsetX, event.offsetY);
+    ctx.fill();
   }
   ctx.beginPath();
   ctx.moveTo(event.offsetX, event.offsetY);
@@ -42,6 +52,23 @@ function cancelPainting(event) {
 function onLineWidthChange(event) {
   ctx.lineWidth = event.target.value;
 }
+function onFontWidthChange(event) {
+  console.log(fontStyle.value);
+  if (fontStyle.value !== "") {
+    ctx.font = `${event.target.value}px ${fontStyle.value}`;
+  } else {
+    ctx.font = `${event.target.value}px serif`;
+  }
+}
+
+function onFontStyleChange(event) {
+  if (event.target.value !== "")
+    ctx.font = `${fontWidth.value}px ${event.target.value}`;
+  else {
+    ctx.font = `${fontWidth.value}px serif`;
+  }
+}
+
 function onColorChange(event) {
   ctx.strokeStyle = event.target.value;
   ctx.fillStyle = event.target.value;
@@ -55,20 +82,32 @@ function onColorClick(event) {
 function onModeClick(event) {
   if (isFilling) {
     isFilling = false;
-    modeBtn.innerText = "Fill";
+    modeBtn.innerText = "📐 Draw Figure";
   } else {
     isFilling = true;
-    modeBtn.innerText = "Draw";
+    modeBtn.innerText = "✏️ Draw Line";
   }
 }
-function onCanvasClick(event) {
-  if (isFilling) {
-    ctx.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+
+function onFillBackgroundClick() {
+  ctx.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+}
+
+function onTextModeClick(event) {
+  if (isFillingText) {
+    isFillingText = false;
+    textModeBtn.innerText = "🪣 Fill Text";
+  } else {
+    isFillingText = true;
+    textModeBtn.innerText = "✏️ Draw Text";
   }
 }
+
 function onDestroyClick(event) {
+  ctx.save();
   ctx.fillStyle = "white";
   ctx.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+  ctx.restore();
 }
 function onEraserClick(event) {
   ctx.strokeStyle = "white";
@@ -89,11 +128,15 @@ function onFileChange(event) {
 
 function onDoubleClick(event) {
   const text = textInput.value;
-  if (text !== "") {
+  if (text !== "" && isFillingText === true) {
     ctx.save();
     ctx.lineWidth = 1;
-    ctx.font = "68px serif";
     ctx.fillText(text, event.offsetX, event.offsetY);
+    ctx.restore();
+  } else {
+    ctx.save();
+    ctx.lineWidth = 1;
+    ctx.strokeText(text, event.offsetX, event.offsetY);
     ctx.restore();
   }
 }
@@ -111,11 +154,12 @@ canvas.addEventListener("mousemove", onMove);
 canvas.addEventListener("mousedown", startPainting);
 canvas.addEventListener("mouseup", cancelPainting);
 canvas.addEventListener("mouseleave", cancelPainting);
-canvas.addEventListener("click", onCanvasClick);
 canvas.addEventListener("dblclick", onDoubleClick);
 
 lineWidth.addEventListener("change", onLineWidthChange);
 color.addEventListener("change", onColorChange);
+fontWidth.addEventListener("change", onFontWidthChange);
+fontStyle.addEventListener("change", onFontStyleChange);
 
 colorOption.forEach((color) => color.addEventListener("click", onColorClick));
 
@@ -124,3 +168,5 @@ destroyBtn.addEventListener("click", onDestroyClick);
 eraserBtn.addEventListener("click", onEraserClick);
 fileInput.addEventListener("change", onFileChange);
 saveBtn.addEventListener("click", onSaveClick);
+textModeBtn.addEventListener("click", onTextModeClick);
+fillBackgroundBtn.addEventListener("click", onFillBackgroundClick);
