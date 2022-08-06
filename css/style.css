@@ -72,12 +72,12 @@ canvas {
 
 .manual span:first-child {
   font-size: 30px;
-  margin-bottom: 40px;
+  margin-bottom: 30px;
   font-weight: 600;
 }
 
 .manual span:nth-child(5) {
-  margin-top: 40px;
+  margin-top: 30px;
   font-size: 25px;
   font-weight: 600;
 }
