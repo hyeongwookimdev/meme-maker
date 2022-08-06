@@ -1,5 +1,4 @@
-const arcWidth = document.querySelector("#arc-width");
-const arcBtn = document.querySelector("#arc-btn");
+const frame = document.querySelector("#frame");
 const fillBackgroundBtn = document.querySelector("#fill-background-btn");
 const textModeBtn = document.querySelector("#text-mode-btn");
 const fontStyle = document.querySelector("#font-style");
@@ -31,16 +30,12 @@ ctx.lineCap = "round";
 let isPainting = false;
 let isFilling = false;
 let isFillingText = false;
-let isArc = false;
 
 function onMove(event) {
   if (isPainting) {
     ctx.lineTo(event.offsetX, event.offsetY);
     ctx.stroke();
     return; //함수 끝내기
-  } else if (isFilling) {
-    ctx.lineTo(event.offsetX, event.offsetY);
-    ctx.fill();
   }
   ctx.beginPath();
   ctx.moveTo(event.offsetX, event.offsetY);
@@ -50,6 +45,10 @@ function startPainting(event) {
 }
 function cancelPainting(event) {
   isPainting = false;
+  if (isFilling) {
+    ctx.fill();
+  }
+  ctx.beginPath();
 }
 function onLineWidthChange(event) {
   ctx.lineWidth = event.target.value;
@@ -62,6 +61,19 @@ function onFontWidthChange(event) {
   } else {
     ctx.font = `${event.target.value}px serif`;
   }
+}
+
+function onFrameClick() {
+  ctx.save();
+  ctx.beginPath();
+  ctx.lineWidth = 30;
+  ctx.moveTo(0, 0);
+  ctx.lineTo(800, 0);
+  ctx.lineTo(800, 800);
+  ctx.lineTo(0, 800);
+  ctx.lineTo(0, 0);
+  ctx.stroke();
+  ctx.restore();
 }
 
 function onFontStyleChange(event) {
@@ -92,16 +104,6 @@ function onModeClick(event) {
   }
 }
 
-function onArcClick() {
-  if (isArc) {
-    isArc = false;
-    arcBtn.innerText = "⚪️ Draw Circle";
-  } else {
-    isArc = true;
-    arcBtn.innerText = "Cancle Circle Mode";
-  }
-}
-
 function onFillBackgroundClick() {
   ctx.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
 }
@@ -122,8 +124,6 @@ function onDestroyClick() {
 
 function onEraserClick(event) {
   ctx.strokeStyle = "white";
-  isFilling = false;
-  modeBtn.innerText = "Fill";
 }
 
 function onFileChange(event) {
@@ -152,14 +152,6 @@ function onDoubleClick(event) {
   }
 }
 
-function onDoubleClickCircle(event) {
-  if (isArc) {
-    console.log(arcWidth);
-    ctx.arc(event.offsetX, event.offsetY, arcWidth.value, 0, 2 * Math.PI);
-    ctx.fill();
-  }
-}
-
 function onSaveClick() {
   //목표: 현재 캔버스 안에 있는 이미지를 저장
   const url = canvas.toDataURL(); // base64로 인코딩되어있는 이미지를 돌려줌
@@ -169,12 +161,20 @@ function onSaveClick() {
   a.click();
 }
 
+function offStickerMode() {
+  isHeart = false;
+  heart.innerText = "❤️";
+  isArc = false;
+  arcBtn.innerText = "⚪️ Draw Circle";
+  isSpeechBalloon = false;
+  speechBalloon.innerText = "💬";
+}
+
 canvas.addEventListener("mousemove", onMove);
 canvas.addEventListener("mousedown", startPainting);
 canvas.addEventListener("mouseup", cancelPainting);
 canvas.addEventListener("mouseleave", cancelPainting);
 canvas.addEventListener("dblclick", onDoubleClick);
-canvas.addEventListener("dblclick", onDoubleClickCircle);
 
 lineWidth.addEventListener("change", onLineWidthChange);
 color.addEventListener("change", onColorChange);
@@ -190,4 +190,5 @@ fileInput.addEventListener("change", onFileChange);
 saveBtn.addEventListener("click", onSaveClick);
 textModeBtn.addEventListener("click", onTextModeClick);
 fillBackgroundBtn.addEventListener("click", onFillBackgroundClick);
-arcBtn.addEventListener("click", onArcClick);
+frame.addEventListener("click", onFrameClick);
+textInput.addEventListener("click", offStickerMode);

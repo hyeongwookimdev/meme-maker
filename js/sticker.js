@@ -1,8 +1,20 @@
 const speechBalloon = document.querySelector("#speech-balloon");
 const heart = document.querySelector("#heart");
+const arcWidth = document.querySelector("#arc-width");
+const arcBtn = document.querySelector("#arc-btn");
 
 let isSpeechBalloon = false;
 let isHeart = false;
+let isArc = false;
+
+/*
+let isPainting = false;
+let isFilling = false;
+let isFillingText = false;
+let isArc = false;
+let isSpeechBalloon = false;
+let isHeart = false;
+*/
 
 function onSpeechBalloonClick() {
   console.log(speechBalloon);
@@ -12,6 +24,10 @@ function onSpeechBalloonClick() {
   } else {
     isSpeechBalloon = true;
     speechBalloon.innerText = "Cancle";
+    isHeart = false;
+    heart.innerText = "❤️";
+    isArc = false;
+    arcBtn.innerText = "⚪️ Draw Circle";
   }
 }
 function onHeartClick() {
@@ -21,6 +37,24 @@ function onHeartClick() {
   } else {
     isHeart = true;
     heart.innerText = "Cancle";
+    isSpeechBalloon = false;
+    speechBalloon.innerText = "💬";
+    isArc = false;
+    arcBtn.innerText = "⚪️ Draw Circle";
+  }
+}
+
+function onArcClick() {
+  if (isArc) {
+    isArc = false;
+    arcBtn.innerText = "⚪️ Draw Circle";
+  } else {
+    isArc = true;
+    arcBtn.innerText = "Cancle Circle Mode";
+    isHeart = false;
+    heart.innerText = "❤️";
+    isSpeechBalloon = false;
+    speechBalloon.innerText = "💬";
   }
 }
 
@@ -64,7 +98,7 @@ function onDoubleClickSpeech(event) {
       event.offsetX,
       event.offsetY
     );
-    ctx.stroke();
+    ctx.fill();
   }
 }
 
@@ -125,8 +159,18 @@ function onDoubleClickHeart(event) {
   }
 }
 
+function onDoubleClickCircle(event) {
+  if (isArc) {
+    console.log(arcWidth);
+    ctx.arc(event.offsetX, event.offsetY, arcWidth.value, 0, 2 * Math.PI);
+    ctx.fill();
+  }
+}
+
 canvas.addEventListener("dblclick", onDoubleClickSpeech);
 canvas.addEventListener("dblclick", onDoubleClickHeart);
+canvas.addEventListener("dblclick", onDoubleClickCircle);
 
 speechBalloon.addEventListener("click", onSpeechBalloonClick);
 heart.addEventListener("click", onHeartClick);
+arcBtn.addEventListener("click", onArcClick);
